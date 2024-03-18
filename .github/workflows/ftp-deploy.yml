@@ -6,6 +6,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
+            .gitignore
+            app_manjatec
+
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.x
