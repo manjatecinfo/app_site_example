@@ -13,5 +13,5 @@ jobs:
         host: ${{ secrets.HOST }} 
         user: ${{ secrets.USER }}
         password: ${{ secrets.PASS }}
-        localDir: "app_manjatec"
-        remoteDir: "${{secrets.REMOTE_DIR_ROOT}}\\app_manjantec\\"
+        localDir: app_manjatec
+        remoteDir: app_manjantec
