@@ -5,13 +5,27 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.x
+          cache: true
 
-    - name: FTP Deploy Locaweb
-      uses: locaweb/ftp-deploy@1.0.0
-      with:
-        host: ${{ secrets.HOST }} 
-        user: ${{ secrets.USER }}
-        password: ${{ secrets.PASS }}
-        localDir: app_manjatec
-        remoteDir: app_manjantec
+      - name: Restore Nugget
+        run: dotnet restore --locked-mode
+
+      - name: Build dotnet
+        run: dotnet build --configuration Release
+
+      - name: Gerar Pacote publicacao
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/app
+    
+
+      - name: FTP Deploy Locaweb
+        uses: locaweb/ftp-deploy@1.0.0
+        with:
+          host: ${{ secrets.HOST }} 
+          user: ${{ secrets.USER }}
+          password: ${{ secrets.PASS }}
+          localDir: ${{env.DOTNET_ROOT}}/app
+          remoteDir: ${{secrets.REMOTE_DIR_ROOT}}\\app_manjantec
